@@ -101,3 +101,42 @@ SELECT 2022 as anio,
     SUM(total_coloc)::int as total_coloc,
     SUM(valor_coloc)::real as valor_coloc
 FROM lec_georeg_if03;
+
+-- FAG Expedidas IF03 cifras totales
+SELECT 'fagexp_if03' as tabla,
+    mes::int,
+    SUM(total_cert)::int as total_cert,
+    SUM(valor_garant)::real as valor_garant,
+    SUM(valor_credfag)::real as valor_credfag
+FROM fagexp_if03
+WHERE anio = 2022
+GROUP BY 2
+UNION
+-- esta union corresponde a los totales del anio corrido (vigencia corrida representada por el valor de 0 en el campo mes)
+SELECT 'lec_if03' as tabla,
+    0 as mes,
+    SUM(total_cert)::int as total_cert,
+    SUM(valor_garant)::real as valor_garant,
+    SUM(valor_credfag)::real as valor_credfag
+FROM fagexp_if03
+WHERE anio = 2022
+GROUP BY 2
+ORDER BY 1, 2;
+-- FAG Expedidas IF03 Cifras capa geografica (municipios)
+SELECT 2022 as anio,
+    SUM(total_cert)::int as total_cert,
+    SUM(valor_garant)::real as valor_garant,
+    SUM(valor_credfag)::real as valor_credfag
+FROM fagexp_geo_if03;
+-- FAG Expedidas IF03 Cifras capa geografica (departamentos)
+SELECT 2022 as anio,
+    SUM(total_cert)::int as total_cert,
+    SUM(valor_garant)::real as valor_garant,
+    SUM(valor_credfag)::real as valor_credfag
+FROM fagexp_geodep_if03;
+-- FAG Expedidas IF03 Cifras capa geografica (regiones)
+SELECT 2022 as anio,
+    SUM(total_cert)::int as total_cert,
+    SUM(valor_garant)::real as valor_garant,
+    SUM(valor_credfag)::real as valor_credfag
+FROM fagexp_georeg_if03;
