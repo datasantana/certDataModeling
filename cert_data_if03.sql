@@ -70,7 +70,8 @@ FROM saldos_georeg_if03;
 SELECT 'lec_if03' as tabla,
     mes::int,
     SUM(total_coloc)::int as total_coloc,
-    SUM(valor_coloc)::real as valor_coloc
+    SUM(valor_coloc)::real as valor_coloc,
+    SUM(valor_subs)::real as valor_subs
 FROM lec_if03
 WHERE anio = 2022
 GROUP BY 2
@@ -79,7 +80,8 @@ UNION
 SELECT 'lec_if03' as tabla,
     0 as mes,
     SUM(total_coloc)::int as total_coloc,
-    SUM(valor_coloc)::real as valor_coloc
+    SUM(valor_coloc)::real as valor_coloc,
+    SUM(valor_subs)::real as valor_subs
 FROM lec_if03
 WHERE anio = 2022
 GROUP BY 2
@@ -94,7 +96,7 @@ SELECT 2022 as anio,
     SUM(total_coloc)::int as total_coloc,
     SUM(valor_coloc)::real as valor_coloc
 FROM lec_geodep_if03;
--- Colocaciones IF03 Cifras capa geografica (regiones)
+-- LEC IF03 Cifras capa geografica (regiones)
 SELECT 2022 as anio,
     SUM(total_coloc)::int as total_coloc,
     SUM(valor_coloc)::real as valor_coloc
