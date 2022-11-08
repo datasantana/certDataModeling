@@ -303,3 +303,33 @@ SELECT 2022 as anio,
     SUM(total_operac)::int as total_operac,
     SUM(valor_cred)::real as valor_cred
 FROM mfrop_georeg_if03;
+
+-- CIF IF03 cifras totales
+SELECT 'cifop_if03' as tabla,
+    mes::int as mes,
+    COUNT(DISTINCT contrato)::int as total_contratos,
+    MAX(valor_valiq)::real as valor_liqcif,
+    SUM(valor_pagcif)::real as valor_pagcif,
+    MAX(area_vig)::real as area_vig
+FROM cifop_if03
+WHERE anio = 2022
+GROUP BY 2
+UNION
+-- esta union corresponde a los totales del anio corrido (vigencia corrida representada por el valor de 0 en el campo mes)
+SELECT 'cifop_if03' as tabla,
+    0 as mes,
+    COUNT(DISTINCT contrato)::int as total_contratos,
+    MAX(valor_valiq)::real as valor_liqcif,
+    SUM(valor_pagcif)::real as valor_pagcif,
+    MAX(area_vig)::real as area_vig
+FROM cifop_if03
+WHERE anio = 2022
+GROUP BY 2
+ORDER BY 1, 2;
+-- CIF IF03 Cifras capa geografica (municipios)
+SELECT 2022 as anio,
+    SUM(total_contr)::int as total_contr,
+    SUM(valor_valiq)::real as valor_liqcif,
+    SUM(valor_pag)::real as valor_pagcif,
+    SUM(total_area)::real as area_vig
+FROM cifop_geo_if03;
