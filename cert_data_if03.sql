@@ -269,3 +269,37 @@ SELECT 2022 as anio,
     SUM(valor_asegurado)::real as valor_aseg,
     SUM(valor_incentivo)::real as valor_incisa
 FROM isapol_georeg_if03;
+
+-- FMR IF03 cifras totales
+SELECT 'mfrop_if03' as tabla,
+    mes::int as mes,
+    SUM(total_operac)::int as total_operac,
+    SUM(valor_cred)::real as valor_cred
+FROM mfrop_if03
+WHERE anio = 2022
+GROUP BY 2
+UNION
+-- esta union corresponde a los totales del anio corrido (vigencia corrida representada por el valor de 0 en el campo mes)
+SELECT 'mfrop_if03' as tabla,
+    0 as mes,
+    SUM(total_operac)::int as total_operac,
+    SUM(valor_cred)::real as valor_cred
+FROM mfrop_if03
+WHERE anio = 2022
+GROUP BY 2
+ORDER BY 1, 2;
+-- FMR IF03 Cifras capa geografica (municipios)
+SELECT 2022 as anio,
+    SUM(total_operac)::int as total_operac,
+    SUM(valor_cred)::real as valor_cred
+FROM mfrop_geo_if03;
+-- FMR IF03 Cifras capa geografica (departamentos)
+SELECT 2022 as anio,
+    SUM(total_operac)::int as total_operac,
+    SUM(valor_cred)::real as valor_cred
+FROM mfrop_geodep_if03;
+-- FMR IF03 Cifras capa geografica (regiones)
+SELECT 2022 as anio,
+    SUM(total_operac)::int as total_operac,
+    SUM(valor_cred)::real as valor_cred
+FROM mfrop_georeg_if03;
