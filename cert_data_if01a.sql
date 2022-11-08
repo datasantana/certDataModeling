@@ -7,6 +7,16 @@ SELECT 'Totales IF01A' as tabla,
 FROM totales_if01_a
 WHERE anio = 2022
 GROUP BY 2, 3
+UNION
+-- esta union corresponde a los totales del anio corrido (vigencia corrida representada por el valor de 0 en el campo mes)
+SELECT 'Totales IF01A' as tabla, 
+    subtipo_inst, 
+    0 as mes,
+    SUM(total_opif)::int as total_opif,
+    SUM(valor_opif)::real as valor_opif
+FROM totales_if01_a
+WHERE anio = 2022
+GROUP BY 2, 3
 ORDER BY 1, 2, 3;
 
 -- IF01A Cifras capa geografica (municipios)
