@@ -270,6 +270,29 @@ SELECT 2022 as anio,
     SUM(valor_incentivo)::real as valor_incisa
 FROM isapol_georeg_if03;
 
+-- ISA IF03 cifras totales (capa de puntos)
+SELECT 'isaunaseg_if03' as tabla,
+    mes_vigencia::int as mes,
+    SUM(total_unaseg)::int as total_unaseg,
+    SUM(valor_aseg)::real as valor_aseg,
+    SUM(valor_incisa)::real as valor_incisa,
+    SUM(valor_prima)::real as valor_prima
+FROM isapoint_geo_if03
+WHERE anio_vigencia = 2022
+GROUP BY 2
+UNION
+-- esta union corresponde a los totales del anio corrido (vigencia corrida representada por el valor de 0 en el campo mes)
+SELECT 'isaunaseg_if03' as tabla,
+    0 as mes,
+    SUM(total_unaseg)::int as total_unaseg,
+    SUM(valor_aseg)::real as valor_aseg,
+    SUM(valor_incisa)::real as valor_incisa,
+    SUM(valor_prima)::real as valor_prima
+FROM isapoint_geo_if03
+WHERE anio_vigencia = 2022
+GROUP BY 2
+ORDER BY 1, 2;
+
 -- FMR IF03 cifras totales
 SELECT 'mfrop_if03' as tabla,
     mes::int as mes,
