@@ -79,3 +79,26 @@ FROM icrmjr_if06
 WHERE anio = 2022
 GROUP BY 1, 2
 ORDER BY 1, 2;
+
+-- ISA IF06 cifras totales
+SELECT mes::int,
+    'Total Persona Natural' as sexo,
+    SUM(total_unaseg)::int as total_unaseg,
+    SUM(valor_valaseg)::real as valor_aseg,
+    SUM(valor_incisa)::real as valor_incisa,
+    SUM(valor_prima)::real as valor_prima
+FROM isamjr_if06
+WHERE anio_vigencia = 2022
+GROUP BY 1, 2
+UNION
+-- esta union corresponde a los totales del anio corrido
+SELECT mes::int,
+    sexo,
+    SUM(total_unaseg)::int as total_unaseg,
+    SUM(valor_valaseg)::real as valor_aseg,
+    SUM(valor_incisa)::real as valor_incisa,
+    SUM(valor_prima)::real as valor_prima
+FROM isamjr_if06
+WHERE anio_vigencia = 2022
+GROUP BY 1, 2
+ORDER BY 1, 2;
