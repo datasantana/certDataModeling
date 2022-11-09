@@ -122,3 +122,25 @@ WHERE anio = 2022
 GROUP BY 1, 2
 ORDER BY 1, 2;
 
+-- CIF IF06 cifras totales
+SELECT mes::int,
+    'Total Persona Natural' as sexo,
+    COUNT(DISTINCT contrato)::int as total_contratos,
+    MAX(valor_valiq)::real as valor_liqcif,
+    SUM(valor_pag)::real as valor_pagcif,
+    MAX(area)::real as area_vig
+FROM cifmjr_if06
+WHERE anio = 2022
+GROUP BY 1, 2
+UNION
+-- esta union corresponde a los totales del anio corrido
+SELECT mes::int,
+    sexo,
+    COUNT(DISTINCT contrato)::int as total_contratos,
+    MAX(valor_valiq)::real as valor_liqcif,
+    SUM(valor_pag)::real as valor_pagcif,
+    MAX(area)::real as area_vig
+FROM cifmjr_if06
+WHERE anio = 2022
+GROUP BY 1, 2
+ORDER BY 1, 2;
