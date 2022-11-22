@@ -6,7 +6,7 @@ SELECT 'isapol_if02' as tabla,
     SUM(valor_valaseg)::real as valor_aseg,
     SUM(valor_incisa)::real as valor_incisa,
     SUM(valor_prima)::real as valor_prima
-FROM isapol_if02
+FROM vw_isapol_if02
 WHERE anio_vigencia = 2022
 GROUP BY 2
 UNION
@@ -18,7 +18,7 @@ SELECT 'isapol_if02' as tabla,
     SUM(valor_valaseg)::real as valor_aseg,
     SUM(valor_incisa)::real as valor_incisa,
     SUM(valor_prima)::real as valor_prima
-FROM isapol_if02
+FROM vw_isapol_if02
 WHERE anio_vigencia = 2022
 GROUP BY 2
 ORDER BY 1, 2;

@@ -236,8 +236,8 @@ SELECT 'isaunaseg_if03' as tabla,
     SUM(valor_aseg)::real as valor_aseg,
     SUM(valor_incisa)::real as valor_incisa,
     SUM(valor_prima)::real as valor_prima
-FROM isaunaseg_if03
-WHERE anio_vigencia = 2022
+FROM vw_isaunaseg_if03
+WHERE anio_vigencia = 2022 -- and mes_vigencia BETWEEN 1 and 10
 GROUP BY 2
 UNION
 -- esta union corresponde a los totales del anio corrido (vigencia corrida representada por el valor de 0 en el campo mes)
@@ -247,8 +247,8 @@ SELECT 'isaunaseg_if03' as tabla,
     SUM(valor_aseg)::real as valor_aseg,
     SUM(valor_incisa)::real as valor_incisa,
     SUM(valor_prima)::real as valor_prima
-FROM isaunaseg_if03
-WHERE anio_vigencia = 2022
+FROM vw_isaunaseg_if03
+WHERE anio_vigencia = 2022 --and mes_vigencia BETWEEN 1 and 10
 GROUP BY 2
 ORDER BY 1, 2;
 -- ISA IF03 Cifras capa geografica (municipios)
@@ -329,23 +329,23 @@ FROM mfrop_georeg_if03;
 
 -- CIF IF03 cifras totales
 SELECT 'cifop_if03' as tabla,
-    mes::int as mes,
-    COUNT(DISTINCT contrato)::int as total_contratos,
-    MAX(valor_valiq)::real as valor_liqcif,
-    SUM(valor_pagcif)::real as valor_pagcif,
-    MAX(area_vig)::real as area_vig
-FROM cifop_if03
+    c.mes::int as mes,
+    COUNT(c.contrato)::int as total_contratos,
+    MAX(c.valor_valiq)::real as valor_liqcif,
+    SUM(c.valor_pagcif)::real as valor_pagcif,
+    SUM(c.area_vig)::real as area_vig
+FROM (SELECT DISTINCT anio, mes, contrato, valor_valiq, valor_pagcif, area_vig FROM vw_cifop_if03) c
 WHERE anio = 2022
 GROUP BY 2
 UNION
 -- esta union corresponde a los totales del anio corrido (vigencia corrida representada por el valor de 0 en el campo mes)
 SELECT 'cifop_if03' as tabla,
     0 as mes,
-    COUNT(DISTINCT contrato)::int as total_contratos,
-    MAX(valor_valiq)::real as valor_liqcif,
-    SUM(valor_pagcif)::real as valor_pagcif,
-    MAX(area_vig)::real as area_vig
-FROM cifop_if03
+    COUNT(c.contrato)::int as total_contratos,
+    MAX(c.valor_valiq)::real as valor_liqcif,
+    SUM(c.valor_pagcif)::real as valor_pagcif,
+    SUM(c.area_vig)::real as area_vig
+FROM (SELECT DISTINCT anio, mes, contrato, valor_valiq, valor_pagcif, area_vig FROM vw_cifop_if03) c
 WHERE anio = 2022
 GROUP BY 2
 ORDER BY 1, 2;
